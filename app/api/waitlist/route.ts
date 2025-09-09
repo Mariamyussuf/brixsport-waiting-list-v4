@@ -5,13 +5,22 @@ export async function POST(request: NextRequest) {
   try {
     console.log("[v0] POST /api/waitlist - Starting request")
 
-    const { email, referralSource, sportsInterests } = await request.json()
-    console.log("[v0] Request data:", { email: email ? "provided" : "missing", referralSource, sportsInterests })
+    const { email, university, referralSource, sportsInterests } = await request.json()
+    console.log("[v0] Request data:", {
+      email: email ? "provided" : "missing",
+      university: university ? "provided" : "missing",
+      referralSource,
+      sportsInterests,
+    })
 
-    // Validate email
     if (!email || !email.includes("@")) {
       console.log("[v0] Email validation failed")
       return NextResponse.json({ error: "Valid email is required" }, { status: 400 })
+    }
+
+    if (!university || university.trim().length === 0) {
+      console.log("[v0] University validation failed")
+      return NextResponse.json({ error: "University is required" }, { status: 400 })
     }
 
     console.log("[v0] Creating Supabase client")
@@ -19,11 +28,11 @@ export async function POST(request: NextRequest) {
 
     console.log("[v0] Attempting to insert into waitlist_signups table")
 
-    // Insert into waitlist_signups
     const { data, error } = await supabase
       .from("waitlist_signups")
       .insert({
         email: email.toLowerCase().trim(),
+        university: university.trim(),
         referral_source: referralSource || null,
         sports_interests: sportsInterests || [],
       })
@@ -32,7 +41,6 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.log("[v0] Supabase insert error:", error)
-      // Handle duplicate email
       if (error.code === "23505") {
         return NextResponse.json({ error: "Email already registered for waitlist" }, { status: 409 })
       }
@@ -55,7 +63,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Get waitlist stats (public endpoint)
 export async function GET() {
   try {
     console.log("[v0] GET /api/waitlist - Starting request")
@@ -78,7 +85,6 @@ export async function GET() {
     const supabase = await createClient()
 
     console.log("[v0] Attempting to count waitlist_signups")
-    // Select from waitlist_signups
     const { count, error } = await supabase.from("waitlist_signups").select("*", { count: "exact", head: true })
 
     if (error) {
