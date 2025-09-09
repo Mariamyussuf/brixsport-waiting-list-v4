@@ -340,40 +340,49 @@ export default function BrixsportsWaitlist() {
       </section>
 
       {/* Social Media Section */}
-      <section className="relative z-10 py-12 md:py-16 bg-gradient-to-r from-blue-500/10 to-green-500/10">
+      <section className="relative z-10 py-8 md:py-12 bg-gradient-to-r from-blue-500/10 to-green-500/10">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-black mb-6 md:mb-8 text-white">Follow the Movement</h3>
-            <div className="flex justify-center gap-6 md:gap-8">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-4 md:mb-6 text-white">Follow the Movement</h3>
+            <div className="flex justify-center gap-4 md:gap-6">
               <a
                 href="#"
-                className="bg-gradient-to-br from-yellow-400 to-orange-500 p-4 md:p-5 rounded-2xl shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-yellow-500/30 border-2 border-white/20"
+                className="bg-gradient-to-br from-yellow-400 to-orange-500 p-3 md:p-4 rounded-xl shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-yellow-500/30 border-2 border-white/20"
                 aria-label="Snapchat"
               >
-                <div className="w-8 h-8 md:w-10 md:h-10 bg-black rounded-lg flex items-center justify-center">
-                  <span className="text-yellow-400 font-black text-lg md:text-xl">👻</span>
+                <div className="w-6 h-6 md:w-8 md:h-8 bg-black rounded-lg flex items-center justify-center">
+                  <span className="text-yellow-400 font-black text-sm md:text-lg">👻</span>
                 </div>
               </a>
               <a
                 href="#"
-                className="bg-gradient-to-br from-pink-500 to-purple-600 p-4 md:p-5 rounded-2xl shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-pink-500/30 border-2 border-white/20"
+                className="bg-gradient-to-br from-pink-500 to-purple-600 p-3 md:p-4 rounded-xl shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-pink-500/30 border-2 border-white/20"
                 aria-label="Instagram"
               >
-                <Instagram className="w-8 h-8 md:w-10 md:h-10 text-white" />
+                <Instagram className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </a>
               <a
                 href="#"
-                className="bg-gradient-to-br from-gray-800 to-black p-4 md:p-5 rounded-2xl shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-gray-500/30 border-2 border-white/20"
+                className="bg-gradient-to-br from-black to-red-600 p-3 md:p-4 rounded-xl shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-red-500/30 border-2 border-white/20"
+                aria-label="TikTok"
+              >
+                <div className="w-6 h-6 md:w-8 md:h-8 bg-white rounded-lg flex items-center justify-center">
+                  <span className="text-black font-black text-sm md:text-lg">🎵</span>
+                </div>
+              </a>
+              <a
+                href="#"
+                className="bg-gradient-to-br from-gray-800 to-black p-3 md:p-4 rounded-xl shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-gray-500/30 border-2 border-white/20"
                 aria-label="X (Twitter)"
               >
-                <Twitter className="w-8 h-8 md:w-10 md:h-10 text-white" />
+                <Twitter className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </a>
               <a
                 href="mailto:hello@brixsports.com"
-                className="bg-gradient-to-br from-blue-500 to-green-500 p-4 md:p-5 rounded-2xl shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-blue-500/30 border-2 border-white/20"
+                className="bg-gradient-to-br from-blue-500 to-green-500 p-3 md:p-4 rounded-xl shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-blue-500/30 border-2 border-white/20"
                 aria-label="Email"
               >
-                <Mail className="w-8 h-8 md:w-10 md:h-10 text-white" />
+                <Mail className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </a>
             </div>
           </div>
