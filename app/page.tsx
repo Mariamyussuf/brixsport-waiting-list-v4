@@ -346,41 +346,49 @@ export default function BrixsportsWaitlist() {
             <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-4 md:mb-6 text-white">Follow the Movement</h3>
             <div className="flex justify-center gap-4 md:gap-6">
               <a
-                href="#"
+                href="https://snapchat.com/add/brixsports"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-gradient-to-br from-yellow-400 to-orange-500 p-3 md:p-4 rounded-xl shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-yellow-500/30 border-2 border-white/20"
-                aria-label="Snapchat"
+                aria-label="Follow Brixsports on Snapchat"
               >
-                <div className="w-6 h-6 md:w-8 md:h-8 bg-black rounded-lg flex items-center justify-center">
-                  <span className="text-yellow-400 font-black text-sm md:text-lg">👻</span>
-                </div>
+                <svg className="w-6 h-6 md:w-8 md:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.404-5.958 1.404-5.958s-.359-.719-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.347-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.747 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.624 0 11.99-5.367 11.99-11.99C24.007 5.367 18.641.001.017.001z" />
+                </svg>
               </a>
               <a
-                href="#"
+                href="https://instagram.com/brixsports"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-gradient-to-br from-pink-500 to-purple-600 p-3 md:p-4 rounded-xl shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-pink-500/30 border-2 border-white/20"
-                aria-label="Instagram"
+                aria-label="Follow Brixsports on Instagram"
               >
                 <Instagram className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </a>
               <a
-                href="#"
+                href="https://tiktok.com/@brixsports"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-gradient-to-br from-black to-red-600 p-3 md:p-4 rounded-xl shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-red-500/30 border-2 border-white/20"
-                aria-label="TikTok"
+                aria-label="Follow Brixsports on TikTok"
               >
-                <div className="w-6 h-6 md:w-8 md:h-8 bg-white rounded-lg flex items-center justify-center">
-                  <span className="text-black font-black text-sm md:text-lg">🎵</span>
-                </div>
+                <svg className="w-6 h-6 md:w-8 md:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+                </svg>
               </a>
               <a
-                href="#"
+                href="https://x.com/brixsports"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-gradient-to-br from-gray-800 to-black p-3 md:p-4 rounded-xl shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-gray-500/30 border-2 border-white/20"
-                aria-label="X (Twitter)"
+                aria-label="Follow Brixsports on X"
               >
                 <Twitter className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </a>
               <a
-                href="mailto:hello@brixsports.com"
+                href="mailto:brixsports2025@gmail.com"
                 className="bg-gradient-to-br from-blue-500 to-green-500 p-3 md:p-4 rounded-xl shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-blue-500/30 border-2 border-white/20"
-                aria-label="Email"
+                aria-label="Email Brixsports"
               >
                 <Mail className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </a>
@@ -407,10 +415,10 @@ export default function BrixsportsWaitlist() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-xs sm:text-sm text-white/60">
               <a
-                href="mailto:hello@brixsports.com"
+                href="mailto:brixsports2025@gmail.com"
                 className="hover:text-blue-400 transition-colors duration-300 font-semibold"
               >
-                Contact: hello@brixsports.com
+                Contact: brixsports2025@gmail.com
               </a>
               <span className="hidden sm:inline">•</span>
               <span className="font-semibold">© 2025 Brixsports. All Rights Reserved.</span>
