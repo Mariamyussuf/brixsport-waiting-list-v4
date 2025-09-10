@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
         name: name.trim(),
         university: university.trim(),
         referral_source: referralSource || null,
-        sports_interests: sportsInterests || [],
+        sports_interests: sportsInterests || null,
       })
       .select()
       .single()
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
       }
 
       console.error("Supabase error:", error)
-      return NextResponse.json({ error: "Failed to join waitlist" }, { status: 500 })
+      return NextResponse.json({ error: "Failed to join waitlist: " + error.message }, { status: 500 })
     }
 
     // Send confirmation email
@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
     )
   } catch (error) {
     console.error("[v0] API POST error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json({ error: "Internal server error: " + (error as Error).message }, { status: 500 })
   }
 }
 
@@ -159,7 +159,7 @@ export async function GET() {
     const supabase = await createClient()
 
     console.log("[v0] Attempting to count waitlist_signups")
-    const { count, error } = await supabase.from("waitlist_signups").select("*", { count: "exact", head: true })
+    const { count, error } = await supabase.from("waitlist").select("*", { count: "exact", head: true })
 
     if (error) {
       console.error("[v0] Supabase count error:", error)

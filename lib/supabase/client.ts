@@ -6,18 +6,37 @@ export function createClient() {
     console.error("[Supabase] Missing environment variables")
     // Return a mock client that will fail gracefully
     return {
-      from: () => ({
-        insert: () => ({
+      from: (table: string) => ({
+        insert: (data: any) => ({
           select: () => ({
-            single: () => ({ data: null, error: new Error("Supabase not configured") })
+            single: () => ({ data: null, error: new Error("Supabase not configured - missing environment variables") })
           })
         }),
-        select: () => ({
-          count: () => ({ count: 0, error: new Error("Supabase not configured") })
+        select: (columns?: string) => ({
+          count: (options?: any) => ({ count: 0, error: new Error("Supabase not configured - missing environment variables") }),
+          head: (isHead: boolean) => ({ count: 0, error: new Error("Supabase not configured - missing environment variables") })
         })
       })
     } as any
   }
 
-  return createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+  try {
+    return createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+  } catch (error) {
+    console.error("[Supabase] Error creating client:", error)
+    // Return a mock client that will fail gracefully
+    return {
+      from: (table: string) => ({
+        insert: (data: any) => ({
+          select: () => ({
+            single: () => ({ data: null, error: new Error("Supabase client initialization failed: " + (error as Error).message) })
+          })
+        }),
+        select: (columns?: string) => ({
+          count: (options?: any) => ({ count: 0, error: new Error("Supabase client initialization failed: " + (error as Error).message) }),
+          head: (isHead: boolean) => ({ count: 0, error: new Error("Supabase client initialization failed: " + (error as Error).message) })
+        })
+      })
+    } as any
+  }
 }
