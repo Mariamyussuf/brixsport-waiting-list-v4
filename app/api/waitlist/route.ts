@@ -45,7 +45,9 @@ The Brixsports Team`;
       code: error.code,
       response: error.response
     });
-    throw error;
+    
+    // Re-throw the error so it can be handled by the calling function
+    throw new Error(`Failed to send confirmation email: ${error.message}`);
   }
 }
 
@@ -148,6 +150,7 @@ export async function POST(request: NextRequest) {
             // Send confirmation email
             try {
               await sendConfirmationEmail(email, name);
+              console.log("[v0] Confirmation email sent successfully to", email);
             } catch (emailError) {
               console.error("Failed to send confirmation email:", emailError);
               // Don't fail the request if email sending fails
@@ -185,10 +188,10 @@ export async function POST(request: NextRequest) {
     // Send confirmation email
     try {
       await sendConfirmationEmail(email, name);
+      console.log("[v0] Confirmation email sent successfully to", email);
     } catch (emailError) {
       console.error("Failed to send confirmation email:", emailError);
       // Log the error but don't fail the request - we still want to register the user
-      // Add a note to the response that the email failed to send
       console.log("[v0] User registered but email failed to send");
     }
 
