@@ -54,6 +54,7 @@ export default function BrixsportsWaitlist() {
         },
         body: JSON.stringify({
           email: email.trim(),
+          name: name.trim(),
           university: university.trim(),
           referralSource: "landing_page",
           sportsInterests: ["basketball", "football", "track"],
