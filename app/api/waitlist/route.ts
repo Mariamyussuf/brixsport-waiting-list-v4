@@ -5,6 +5,11 @@ import { Resend } from 'resend';
 // Initialize Resend client only if API key is available
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 console.log('[Resend] Client initialization - API key present:', !!process.env.RESEND_API_KEY);
+console.log('[Resend] API Key (first 5 chars):', process.env.RESEND_API_KEY?.substring(0, 5) + '...');
+
+// Log environment variables for debugging (without exposing the full key)
+console.log('[Environment] RESEND_FROM_EMAIL:', process.env.RESEND_FROM_EMAIL);
+console.log('[Environment] NEXT_PUBLIC_SUPABASE_URL present:', !!process.env.NEXT_PUBLIC_SUPABASE_URL);
 
 // Email sending function
 async function sendConfirmationEmail(email: string, name: string) {
@@ -65,6 +70,7 @@ The Brixsports Team`;
 export async function POST(request: NextRequest) {
   try {
     console.log("[v0] POST /api/waitlist - Starting request")
+    console.log("[v0] Headers:", Object.fromEntries(request.headers));
 
     const { email, university, referralSource, sportsInterests, name } = await request.json()
     console.log("[v0] Request data:", {
