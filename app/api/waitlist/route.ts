@@ -1,13 +1,49 @@
 import { createClient } from "@/lib/supabase/server"
 import { type NextRequest, NextResponse } from "next/server"
+import { Resend } from 'resend';
+
+// Initialize Resend client
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Email sending function
+async function sendConfirmationEmail(email: string, name: string) {
+  const emailContent = `Hi ${name},
+
+Thank you for joining the Brixsports waitlist! We're excited to have you on board.
+
+With Brixsports, matches are stories. Stats are tied to your campus, your players, your rivalries. The meaning is amplified because the community already knows the people on the field.
+
+Brixsports' match feed isn't about passively 'checking scores' like Livescores. It's about living the match in real time inside your campus bubble, powered by people who are actually there.
+
+We'll be in touch soon with updates on our launch.
+
+Best regards,
+The Brixsports Team`;
+
+  try {
+    const data = await resend.emails.send({
+      from: 'Brixsports <welcome@brixsports.com>',
+      to: [email],
+      subject: 'Welcome to Brixsports Waitlist!',
+      text: emailContent,
+    });
+    
+    console.log('Email sent successfully:', data);
+    return data;
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw error;
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
     console.log("[v0] POST /api/waitlist - Starting request")
 
-    const { email, university, referralSource, sportsInterests } = await request.json()
+    const { email, university, referralSource, sportsInterests, name } = await request.json()
     console.log("[v0] Request data:", {
       email: email ? "provided" : "missing",
+      name: name ? "provided" : "missing",
       university: university ? "provided" : "missing",
       referralSource,
       sportsInterests,
@@ -18,6 +54,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Valid email is required" }, { status: 400 })
     }
 
+    if (!name || name.trim().length === 0) {
+      console.log("[v0] Name validation failed")
+      return NextResponse.json({ error: "Name is required" }, { status: 400 })
+    }
+
     if (!university || university.trim().length === 0) {
       console.log("[v0] University validation failed")
       return NextResponse.json({ error: "University is required" }, { status: 400 })
@@ -26,12 +67,13 @@ export async function POST(request: NextRequest) {
     console.log("[v0] Creating Supabase client")
     const supabase = await createClient()
 
-    console.log("[v0] Attempting to insert into waitlist_signups table")
+    console.log("[v0] Attempting to insert into waitlist table")
 
     const { data, error } = await supabase
-      .from("waitlist_signups")
+      .from("waitlist")
       .insert({
         email: email.toLowerCase().trim(),
+        name: name.trim(),
         university: university.trim(),
         referral_source: referralSource || null,
         sports_interests: sportsInterests || [],
@@ -47,6 +89,14 @@ export async function POST(request: NextRequest) {
 
       console.error("Supabase error:", error)
       return NextResponse.json({ error: "Failed to join waitlist" }, { status: 500 })
+    }
+
+    // Send confirmation email
+    try {
+      await sendConfirmationEmail(email, name);
+    } catch (emailError) {
+      console.error("Failed to send confirmation email:", emailError);
+      // Don't fail the request if email sending fails
     }
 
     console.log("[v0] Successfully inserted data:", data)
