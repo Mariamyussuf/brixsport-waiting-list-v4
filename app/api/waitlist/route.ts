@@ -198,7 +198,7 @@ export async function POST(request: NextRequest) {
     console.log("[v0] Successfully inserted data:", data)
     return NextResponse.json(
       {
-        message: "Successfully joined waitlist!",
+        message: "🎉 Welcome to the Brixsports team! You're officially on the waitlist. Get ready for an epic sports journey - we'll be in touch soon with exclusive updates and early access! 🏆",
         id: data?.id || "mock-id",
       },
       { status: 201 },

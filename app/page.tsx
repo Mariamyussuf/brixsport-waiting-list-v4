@@ -71,7 +71,7 @@ export default function BrixsportsWaitlist() {
       if (response.status === 409) {
         setIsSubmitted(true)
         // Don't increment the count for already registered users
-        setError("You're already on our waitlist! We'll be in touch soon.")
+        setError("🎊 You're already on our waitlist! We'll be in touch soon. Get ready for an epic sports journey! 🎉");
         return
       }
 
@@ -81,6 +81,8 @@ export default function BrixsportsWaitlist() {
 
       setIsSubmitted(true)
       setSignedUpCount((prev) => prev + 1)
+      // Add a success message
+      setError("🎉 Success! You're on the Brixsports waitlist. Get ready for an epic sports journey! 🏆")
     } catch (error) {
       console.error("Waitlist submission error:", error)
       setError(error instanceof Error ? error.message : "Something went wrong. Please try again.")
@@ -186,73 +188,95 @@ export default function BrixsportsWaitlist() {
                   <p className="text-sm text-red-200 font-semibold">Limited early access spots available</p>
                 </div>
 
-                <Card className="max-w-lg mx-auto bg-black/70 backdrop-blur-md border-2 border-blue-400/50 shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 mx-4 sm:mx-auto">
-                  <CardContent className="p-6 sm:p-8 md:p-10">
-                    <div className="text-center mb-6 md:mb-8">
-                      <div className="text-4xl sm:text-6xl mb-3 md:mb-4">🏆</div>
-                      <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white mb-2 md:mb-3">
-                        JOIN THE TEAM
+                {isSubmitted ? (
+                  <Card className="max-w-lg mx-auto bg-gradient-to-br from-green-500/20 via-blue-500/20 to-green-600/20 backdrop-blur-md border-2 border-green-400/50 shadow-2xl hover:shadow-green-500/30 transition-all duration-500 mx-4 sm:mx-auto animate-pulse">
+                    <CardContent className="p-6 sm:p-8 md:p-10 text-center">
+                      <div className="text-6xl mb-4 animate-bounce">🎉</div>
+                      <h3 className="text-2xl sm:text-3xl font-black text-white mb-4 animate-pulse">
+                        WELCOME TO THE TEAM!
                       </h3>
-                      <p className="text-sm sm:text-base text-blue-200 font-semibold">
-                        Get exclusive early access when we launch on your campus
+                      <p className="text-lg sm:text-xl text-green-200 font-bold mb-6">
+                        You're officially on the Brixsports waitlist! 🏆
                       </p>
-                    </div>
-                    <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-                      <Input
-                        type="text"
-                        placeholder="Your Name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="bg-black/50 border-2 border-blue-400/50 focus:border-blue-400 focus:ring-blue-400/50 text-white placeholder:text-blue-200/70 text-lg md:text-xl py-3 md:py-4 rounded-xl"
-                        required
-                        disabled={isLoading}
-                      />
-                      <Input
-                        type="email"
-                        placeholder="Your Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="bg-black/50 border-2 border-blue-400/50 focus:border-blue-400 focus:ring-blue-400/50 text-white placeholder:text-blue-200/70 text-lg md:text-xl py-3 md:py-4 rounded-xl"
-                        required
-                        disabled={isLoading}
-                      />
-                      <Input
-                        type="text"
-                        placeholder="Your University"
-                        value={university}
-                        onChange={(e) => setUniversity(e.target.value)}
-                        className="bg-black/50 border-2 border-green-400/50 focus:border-green-400 focus:ring-green-400/50 text-white placeholder:text-green-200/70 text-lg md:text-xl py-3 md:py-4 rounded-xl"
-                        required
-                        disabled={isLoading}
-                      />
-                      {error && (
-                        <div className="bg-red-500/20 border border-red-400/50 rounded-xl p-3 md:p-4 text-red-200 text-center font-semibold text-sm md:text-base">
-                          {error}
-                        </div>
-                      )}
-                      <Button
-                        type="submit"
-                        disabled={isLoading}
-                        className="w-full bg-gradient-to-r from-blue-500 via-green-500 to-blue-600 hover:from-blue-600 hover:via-green-600 hover:to-blue-700 text-white font-black py-4 md:py-5 text-lg md:text-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/30 shadow-2xl rounded-xl border-2 border-white/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                      >
-                        {isLoading ? (
-                          <>
-                            <Loader2 className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6 animate-spin" />
-                            <span className="hidden sm:inline">JOINING THE TEAM...</span>
-                            <span className="sm:hidden">JOINING...</span>
-                          </>
-                        ) : (
-                          <>
-                            <Zap className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6" />
-                            <span className="hidden sm:inline">SPRINT TO THE FRONT</span>
-                            <span className="sm:hidden">JOIN NOW</span>
-                            <ArrowRight className="ml-2 md:ml-3 h-5 w-5 md:h-6 md:w-6" />
-                          </>
+                      <p className="text-base sm:text-lg text-blue-200 mb-6">
+                        Get ready for an epic sports journey. We'll be in touch soon with exclusive updates and early access!
+                      </p>
+                      <div className="bg-gradient-to-r from-yellow-500/30 to-orange-500/30 rounded-xl p-4 border border-yellow-400/50">
+                        <p className="text-yellow-200 font-bold">
+                          🚀 You're among the first to know when we launch!
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card className="max-w-lg mx-auto bg-black/70 backdrop-blur-md border-2 border-blue-400/50 shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 mx-4 sm:mx-auto">
+                    <CardContent className="p-6 sm:p-8 md:p-10">
+                      <div className="text-center mb-6 md:mb-8">
+                        <div className="text-4xl sm:text-6xl mb-3 md:mb-4">🏆</div>
+                        <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white mb-2 md:mb-3">
+                          JOIN THE TEAM
+                        </h3>
+                        <p className="text-sm sm:text-base text-blue-200 font-semibold">
+                          Get exclusive early access when we launch on your campus
+                        </p>
+                      </div>
+                      <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+                        <Input
+                          type="text"
+                          placeholder="Your Name"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          className="bg-black/50 border-2 border-blue-400/50 focus:border-blue-400 focus:ring-blue-400/50 text-white placeholder:text-blue-200/70 text-lg md:text-xl py-3 md:py-4 rounded-xl"
+                          required
+                          disabled={isLoading}
+                        />
+                        <Input
+                          type="email"
+                          placeholder="Your Email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="bg-black/50 border-2 border-blue-400/50 focus:border-blue-400 focus:ring-blue-400/50 text-white placeholder:text-blue-200/70 text-lg md:text-xl py-3 md:py-4 rounded-xl"
+                          required
+                          disabled={isLoading}
+                        />
+                        <Input
+                          type="text"
+                          placeholder="Your University"
+                          value={university}
+                          onChange={(e) => setUniversity(e.target.value)}
+                          className="bg-black/50 border-2 border-green-400/50 focus:border-green-400 focus:ring-green-400/50 text-white placeholder:text-green-200/70 text-lg md:text-xl py-3 md:py-4 rounded-xl"
+                          required
+                          disabled={isLoading}
+                        />
+                        {error && !isSubmitted && (
+                          <div className="bg-gradient-to-r from-green-500/20 to-blue-500/20 border-2 border-green-400/50 rounded-xl p-3 md:p-4 text-green-200 text-center font-bold text-sm md:text-base animate-pulse">
+                            {error}
+                          </div>
                         )}
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
+                        <Button
+                          type="submit"
+                          disabled={isLoading}
+                          className="w-full bg-gradient-to-r from-blue-500 via-green-500 to-blue-600 hover:from-blue-600 hover:via-green-600 hover:to-blue-700 text-white font-black py-4 md:py-5 text-lg md:text-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/30 shadow-2xl rounded-xl border-2 border-white/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                        >
+                          {isLoading ? (
+                            <>
+                              <Loader2 className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6 animate-spin" />
+                              <span className="hidden sm:inline">JOINING THE TEAM...</span>
+                              <span className="sm:hidden">JOINING...</span>
+                            </>
+                          ) : (
+                            <>
+                              <Zap className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6" />
+                              <span className="hidden sm:inline">SPRINT TO THE FRONT</span>
+                              <span className="sm:hidden">JOIN NOW</span>
+                              <ArrowRight className="ml-2 md:ml-3 h-5 w-5 md:h-6 md:w-6" />
+                            </>
+                          )}
+                        </Button>
+                      </form>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
             </div>
 
