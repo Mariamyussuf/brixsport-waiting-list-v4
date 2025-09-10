@@ -2,6 +2,7 @@
 create table if not exists public.waitlist (
   id uuid primary key default gen_random_uuid(),
   email text unique not null,
+  name text not null,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   referral_source text,
   sports_interests text[]
