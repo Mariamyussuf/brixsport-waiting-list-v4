@@ -24,9 +24,13 @@ export default function BrixsportsWaitlist() {
         if (response.ok) {
           const data = await response.json()
           setSignedUpCount(data.totalSignups || 0)
+        } else {
+          // Handle error response but don't show it to user
+          console.error("Failed to fetch waitlist stats:", response.status)
         }
       } catch (error) {
         console.error("Failed to fetch waitlist stats:", error)
+        // Don't show error to user, just use default count of 0
       }
     }
 
@@ -70,7 +74,8 @@ export default function BrixsportsWaitlist() {
       setIsSubmitted(true)
       setSignedUpCount((prev) => prev + 1)
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Something went wrong")
+      console.error("Waitlist submission error:", error)
+      setError(error instanceof Error ? error.message : "Something went wrong. Please try again.")
     } finally {
       setIsLoading(false)
     }
