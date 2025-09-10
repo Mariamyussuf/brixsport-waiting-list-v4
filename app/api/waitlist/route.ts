@@ -27,17 +27,24 @@ Best regards,
 The Brixsports Team`;
 
   try {
+    console.log(`[Resend] Attempting to send email to ${email}`);
     const data = await resend.emails.send({
-      from: 'Brixsports <welcome@brixsports.com>',
+      from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
       to: [email],
       subject: 'Welcome to Brixsports Waitlist!',
       text: emailContent,
     });
     
-    console.log('Email sent successfully:', data);
+    console.log('[Resend] Email sent successfully:', data);
     return data;
-  } catch (error) {
-    console.error('Error sending email:', error);
+  } catch (error: any) {
+    console.error('[Resend] Error sending email:', error);
+    console.error('[Resend] Error details:', {
+      message: error.message,
+      statusCode: error.statusCode,
+      code: error.code,
+      response: error.response
+    });
     throw error;
   }
 }
@@ -180,7 +187,9 @@ export async function POST(request: NextRequest) {
       await sendConfirmationEmail(email, name);
     } catch (emailError) {
       console.error("Failed to send confirmation email:", emailError);
-      // Don't fail the request if email sending fails
+      // Log the error but don't fail the request - we still want to register the user
+      // Add a note to the response that the email failed to send
+      console.log("[v0] User registered but email failed to send");
     }
 
     console.log("[v0] Successfully inserted data:", data)
