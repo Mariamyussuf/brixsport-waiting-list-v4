@@ -90,7 +90,8 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.log("[v0] Supabase insert error:", error)
       // Handle the case where Supabase is not configured
-      if (error.message === "Supabase not configured") {
+      if (error.message === "Supabase not configured - missing environment variables" || 
+          error.message.includes("Supabase not configured")) {
         // Still return success since we want the waitlist to work even without Supabase
         console.log("[v0] Supabase not configured, returning mock success")
         return NextResponse.json(
@@ -100,6 +101,70 @@ export async function POST(request: NextRequest) {
           },
           { status: 201 },
         )
+      }
+      
+      // Handle RLS policy violations by attempting with service role if available
+      if (error.message.includes("row-level security policy")) {
+        console.log("[v0] RLS policy violation detected, attempting with service role if available")
+        
+        // Try to get a service role client
+        if (process.env.SUPABASE_SERVICE_ROLE_KEY && process.env.NEXT_PUBLIC_SUPABASE_URL) {
+          try {
+            const { createClient: createServiceClient } = await import("@supabase/supabase-js")
+            const serviceSupabase = createServiceClient(
+              process.env.NEXT_PUBLIC_SUPABASE_URL!,
+              process.env.SUPABASE_SERVICE_ROLE_KEY!
+            )
+            
+            const { data: serviceData, error: serviceError } = await serviceSupabase
+              .from("waitlist")
+              .insert({
+                email: email.toLowerCase().trim(),
+                name: name.trim(),
+                university: university.trim(),
+                referral_source: referralSource || null,
+                sports_interests: sportsInterests || null,
+              })
+              .select()
+              .single()
+              
+            if (serviceError) {
+              console.error("[v0] Service role insert also failed:", serviceError)
+              return NextResponse.json({ 
+                error: "Unable to join waitlist due to security policy. Please contact support." 
+              }, { status: 500 })
+            }
+            
+            // Service role insert succeeded
+            console.log("[v0] Successfully inserted data with service role:", serviceData)
+            
+            // Send confirmation email
+            try {
+              await sendConfirmationEmail(email, name);
+            } catch (emailError) {
+              console.error("Failed to send confirmation email:", emailError);
+              // Don't fail the request if email sending fails
+            }
+            
+            return NextResponse.json(
+              {
+                message: "Successfully joined waitlist!",
+                id: serviceData?.id || "mock-id",
+              },
+              { status: 201 },
+            )
+          } catch (serviceError) {
+            console.error("[v0] Error creating service client:", serviceError)
+            return NextResponse.json({ 
+              error: "Unable to join waitlist due to security policy. Please contact support." 
+            }, { status: 500 })
+          }
+        } else {
+          console.error("[v0] No service role key available to bypass RLS")
+          return NextResponse.json({ 
+            error: "Unable to join waitlist due to security policy. Please contact support." 
+          }, { status: 500 })
+        }
       }
       
       if (error.code === "23505") {

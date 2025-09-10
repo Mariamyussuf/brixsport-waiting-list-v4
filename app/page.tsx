@@ -67,6 +67,14 @@ export default function BrixsportsWaitlist() {
 
       const data = await response.json()
 
+      // Handle 409 Conflict (email already registered) as a success case
+      if (response.status === 409) {
+        setIsSubmitted(true)
+        // Don't increment the count for already registered users
+        setError("You're already on our waitlist! We'll be in touch soon.")
+        return
+      }
+
       if (!response.ok) {
         throw new Error(data.error || "Failed to join waitlist")
       }
