@@ -4,14 +4,19 @@ import { Resend } from 'resend';
 
 // Initialize Resend client only if API key is available
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+console.log('[Resend] Client initialization - API key present:', !!process.env.RESEND_API_KEY);
 
 // Email sending function
 async function sendConfirmationEmail(email: string, name: string) {
+  console.log(`[Resend] sendConfirmationEmail called with email: ${email}, name: ${name}`);
+  
   // Skip email sending if Resend is not configured
   if (!resend) {
     console.log('Resend not configured, skipping email sending');
     return;
   }
+  
+  console.log('[Resend] Resend client is configured, proceeding with email send');
   
   const emailContent = `Hi ${name},
 
@@ -28,6 +33,12 @@ The Brixsports Team`;
 
   try {
     console.log(`[Resend] Attempting to send email to ${email}`);
+    console.log('[Resend] Email parameters:', {
+      from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
+      to: [email],
+      subject: 'Welcome to Brixsports Waitlist!'
+    });
+    
     const data = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
       to: [email],
@@ -149,6 +160,7 @@ export async function POST(request: NextRequest) {
             
             // Send confirmation email
             try {
+              console.log("[v0] Attempting to send confirmation email (service role path) to:", email);
               await sendConfirmationEmail(email, name);
               console.log("[v0] Confirmation email sent successfully to", email);
             } catch (emailError) {
@@ -187,6 +199,7 @@ export async function POST(request: NextRequest) {
 
     // Send confirmation email
     try {
+      console.log("[v0] Attempting to send confirmation email to:", email);
       await sendConfirmationEmail(email, name);
       console.log("[v0] Confirmation email sent successfully to", email);
     } catch (emailError) {
