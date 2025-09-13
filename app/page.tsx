@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -132,7 +133,16 @@ export default function BrixsportsWaitlist() {
           <div className="text-center max-w-6xl mx-auto">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-6 md:mb-8">
               <div className="bg-gradient-to-br from-blue-500 via-green-500 to-blue-600 p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-2xl animate-bounce border-2 sm:border-4 border-white/20">
-                <Trophy className="h-12 w-12 sm:h-16 sm:w-16 text-white" />
+                {/* Replaced Trophy icon with Brixsports logo */}
+                <div className="flex items-center justify-center">
+                  <Image 
+                    src="/BRIX-SPORT-LOGO.png" 
+                    alt="Brixsports Logo" 
+                    width={80} 
+                    height={80} 
+                    className="h-12 w-12 sm:h-16 sm:w-16"
+                  />
+                </div>
               </div>
               <div className="text-center">
                 <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-black tracking-tighter text-white bg-gradient-to-r from-blue-400 via-green-400 to-blue-400 bg-clip-text leading-none">
@@ -440,7 +450,16 @@ export default function BrixsportsWaitlist() {
         <div className="container mx-auto px-4 text-center">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-6 md:mb-8">
             <div className="bg-gradient-to-br from-blue-500 via-green-500 to-blue-600 p-3 md:p-4 rounded-xl md:rounded-2xl shadow-2xl border-2 sm:border-4 border-white/20">
-              <Trophy className="h-6 w-6 md:h-8 md:w-8 text-white" />
+              {/* Replaced Trophy icon with Brixsports logo */}
+              <div className="flex items-center justify-center">
+                <Image 
+                  src="/BRIX-SPORT-LOGO.png" 
+                  alt="Brixsports Logo" 
+                  width={40} 
+                  height={40} 
+                  className="h-6 w-6 md:h-8 md:w-8"
+                />
+              </div>
             </div>
             <span className="font-black text-2xl sm:text-3xl md:text-4xl text-white">BRIXSPORTS</span>
           </div>
