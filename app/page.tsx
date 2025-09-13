@@ -117,7 +117,7 @@ export default function BrixsportsWaitlist() {
       }`}>
         <div className="container mx-auto">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center">
               <Image 
                 src="/BRIX-SPORT-LOGO.png" 
                 alt="Brixsports Logo" 
@@ -125,7 +125,6 @@ export default function BrixsportsWaitlist() {
                 height={40} 
                 className="h-10 w-10 object-contain"
               />
-              <span className="text-xl font-black text-white tracking-tight">BRIXSPORTS</span>
             </div>
             <Button 
               onClick={() => {
