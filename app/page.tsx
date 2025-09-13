@@ -17,6 +17,7 @@ export default function BrixsportsWaitlist() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [signedUpCount, setSignedUpCount] = useState(0)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const fetchWaitlistStats = async () => {
@@ -35,13 +36,27 @@ export default function BrixsportsWaitlist() {
       }
     }
 
+    // Handle scroll effect for navbar
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    
     // Initial fetch
     fetchWaitlistStats()
 
     // Set up real-time updates every 30 seconds
     const interval = setInterval(fetchWaitlistStats, 30000)
 
-    return () => clearInterval(interval)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      clearInterval(interval)
+    }
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -94,6 +109,28 @@ export default function BrixsportsWaitlist() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-green-950 relative overflow-hidden">
+      {/* Navbar */}
+      <nav className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'bg-black/95 backdrop-blur-md border-b border-blue-400/50 shadow-xl py-3' 
+          : 'bg-black/80 backdrop-blur-md border-b border-blue-400/30 shadow-lg py-4'
+      }`}>
+        <div className="container mx-auto px-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Image 
+                src="/BRIX-SPORT-LOGO.png" 
+                alt="Brixsports Logo" 
+                width={48} 
+                height={48} 
+                className="h-12 w-12 object-contain transition-transform duration-300 hover:scale-105"
+              />
+              <span className="text-2xl font-black text-white tracking-tighter">BRIXSPORTS</span>
+            </div>
+          </div>
+        </div>
+      </nav>
+      
       <div className="fixed inset-0 opacity-20">
         {Array.from({ length: 8 }).map((_, i) => (
           <div
@@ -131,24 +168,10 @@ export default function BrixsportsWaitlist() {
       <section className="relative z-10 overflow-hidden">
         <div className="container mx-auto px-4 py-8 md:py-16 lg:py-24">
           <div className="text-center max-w-6xl mx-auto">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-6 md:mb-8">
-              <div className="bg-gradient-to-br from-blue-500 via-green-500 to-blue-600 p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-2xl animate-bounce border-2 sm:border-4 border-white/20">
-                {/* Replaced Trophy icon with Brixsports logo */}
-                <div className="flex items-center justify-center">
-                  <Image 
-                    src="/BRIX-SPORT-LOGO.png" 
-                    alt="Brixsports Logo" 
-                    width={80} 
-                    height={80} 
-                    className="h-12 w-12 sm:h-16 sm:w-16"
-                  />
-                </div>
-              </div>
-              <div className="text-center">
-                <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-black tracking-tighter text-white bg-gradient-to-r from-blue-400 via-green-400 to-blue-400 bg-clip-text leading-none">
-                  BRIXSPORTS
-                </h1>
-              </div>
+            <div className="text-center mb-6 md:mb-8">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-black tracking-tighter text-white bg-gradient-to-r from-blue-400 via-green-400 to-blue-400 bg-clip-text leading-none">
+                BRIXSPORTS
+              </h1>
             </div>
 
             <div className="mb-6 md:mb-8 p-4 sm:p-6 md:p-8 bg-gradient-to-r from-blue-600/30 via-green-600/30 to-blue-600/30 rounded-2xl md:rounded-3xl border-2 border-white/30 backdrop-blur-md shadow-2xl">
@@ -449,18 +472,6 @@ export default function BrixsportsWaitlist() {
       <footer className="relative z-10 py-12 md:py-16 border-t-2 border-blue-400/30 bg-black/70 backdrop-blur-md">
         <div className="container mx-auto px-4 text-center">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-6 md:mb-8">
-            <div className="bg-gradient-to-br from-blue-500 via-green-500 to-blue-600 p-3 md:p-4 rounded-xl md:rounded-2xl shadow-2xl border-2 sm:border-4 border-white/20">
-              {/* Replaced Trophy icon with Brixsports logo */}
-              <div className="flex items-center justify-center">
-                <Image 
-                  src="/BRIX-SPORT-LOGO.png" 
-                  alt="Brixsports Logo" 
-                  width={40} 
-                  height={40} 
-                  className="h-6 w-6 md:h-8 md:w-8"
-                />
-              </div>
-            </div>
             <span className="font-black text-2xl sm:text-3xl md:text-4xl text-white">BRIXSPORTS</span>
           </div>
           <p className="text-sm sm:text-base md:text-lg text-blue-200 mb-4 md:mb-6 font-bold px-4">
