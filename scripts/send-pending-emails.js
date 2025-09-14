@@ -26,13 +26,13 @@ async function sendPendingEmails() {
     // Check if Resend is configured
     if (!resend) {
       console.error('Resend is not configured. Please set RESEND_API_KEY in your environment variables.');
-      return { success: false, error: 'Resend not configured' };
+      return { success: false, error: 'Resend not configured', sent: 0, failed: 0, total: 0 };
     }
 
     // Check if Supabase is configured
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
       console.error('Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your environment variables.');
-      return { success: false, error: 'Supabase not configured' };
+      return { success: false, error: 'Supabase not configured', sent: 0, failed: 0, total: 0 };
     }
 
     // Create Supabase client with service role key for full access
@@ -42,40 +42,14 @@ async function sendPendingEmails() {
     );
     
     // Fetch waitlist entries that haven't received emails yet
-    // We'll use a simple approach: find entries without an 'email_sent' field or with email_sent = false
     console.log('Fetching pending waitlist entries...');
     
-    // First, let's add an email_sent column if it doesn't exist
-    try {
-      const { error: alterError } = await supabase.rpc('exec_sql', {
-        sql: `ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS email_sent BOOLEAN DEFAULT FALSE`
-      });
-      
-      if (alterError) {
-        console.log('Note: Could not add email_sent column (may already exist or no permissions)', alterError.message);
-      }
-    } catch (e) {
-      console.log('Note: Could not add email_sent column (RPC not available)', e.message);
-    }
-    
     // Fetch entries that haven't had emails sent
-    let { data: waitlistEntries, error } = await supabase
+    const { data: waitlistEntries, error } = await supabase
       .from('waitlist')
       .select('*')
       .eq('email_sent', false)
       .order('created_at', { ascending: true });
-
-    // If the email_sent column doesn't exist or the query fails, fetch all entries
-    if (error) {
-      console.log('Fetching all entries (email_sent column may not exist):', error.message);
-      const result = await supabase
-        .from('waitlist')
-        .select('*')
-        .order('created_at', { ascending: true });
-      
-      waitlistEntries = result.data;
-      error = result.error;
-    }
 
     if (error) {
       console.error('Error fetching waitlist entries:', error);
@@ -84,9 +58,16 @@ async function sendPendingEmails() {
 
     console.log(`Found ${waitlistEntries?.length || 0} pending waitlist entries.`);
     
+    // Return appropriate response if no entries found
     if (!waitlistEntries || waitlistEntries.length === 0) {
       console.log('No pending waitlist entries found.');
-      return { success: true, message: 'No pending entries' };
+      return { 
+        success: true, 
+        message: 'No pending entries',
+        sent: 0,
+        failed: 0,
+        total: 0
+      };
     }
 
     // Send emails with a delay to avoid rate limiting
@@ -137,11 +118,12 @@ async function sendPendingEmails() {
 📊 Total: ${waitlistEntries.length}
 `);
     
+    // Return the exact format required: { total, sent, failed }
     return { 
-      success: true, 
-      sent: successCount, 
-      failed: errorCount, 
-      total: waitlistEntries.length 
+      success: true,
+      total: waitlistEntries.length,
+      sent: successCount,
+      failed: errorCount
     };
     
   } catch (error) {

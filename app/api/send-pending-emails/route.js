@@ -1,7 +1,7 @@
-import { sendFirst100Emails } from '@/scripts/send-first-100';
+import { sendPendingEmails } from '@/scripts/send-pending-emails';
 
 export async function GET(request) {
-  // Check for secret in query parameters (to match your security requirements)
+  // Check for secret in query parameters
   const { searchParams } = new URL(request.url);
   const secret = searchParams.get('secret');
   const expectedSecret = process.env.CRON_SECRET;
@@ -18,18 +18,7 @@ export async function GET(request) {
   }
   
   try {
-    const result = await sendFirst100Emails();
-    
-    // If no emails were sent, return a different message
-    if (result && result.sent === 0 && result.total === 0) {
-      return new Response(
-        JSON.stringify({ message: 'No users found to email', success: true }),
-        {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-    }
+    const result = await sendPendingEmails();
     
     return new Response(
       JSON.stringify(result),
@@ -39,6 +28,7 @@ export async function GET(request) {
       }
     );
   } catch (error) {
+    console.error('Error in send-pending-emails API route:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       {

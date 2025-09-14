@@ -26,13 +26,13 @@ async function sendFirst100Emails() {
     // Check if Resend is configured
     if (!resend) {
       console.error('Resend is not configured. Please set RESEND_API_KEY in your environment variables.');
-      return { success: false, error: 'Resend not configured' };
+      return { success: false, error: 'Resend not configured', sent: 0, failed: 0, total: 0 };
     }
 
     // Check if Supabase is configured
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
       console.error('Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your environment variables.');
-      return { success: false, error: 'Supabase not configured' };
+      return { success: false, error: 'Supabase not configured', sent: 0, failed: 0, total: 0 };
     }
 
     // Create Supabase client with service role key for full access
@@ -57,9 +57,16 @@ async function sendFirst100Emails() {
 
     console.log(`Found ${waitlistEntries?.length || 0} waitlist entries.`);
     
+    // Return appropriate response if no entries found
     if (!waitlistEntries || waitlistEntries.length === 0) {
       console.log('No waitlist entries found.');
-      return { success: true, message: 'No users found to email', sent: 0, failed: 0, total: 0 };
+      return { 
+        success: true, 
+        message: 'No users found to email', 
+        sent: 0, 
+        failed: 0, 
+        total: 0 
+      };
     }
 
     // Send emails with a delay to avoid rate limiting
@@ -110,11 +117,12 @@ async function sendFirst100Emails() {
 📊 Total: ${waitlistEntries.length}
 `);
     
+    // Return the exact format required: { total, sent, failed }
     return { 
-      success: true, 
-      sent: successCount, 
-      failed: errorCount, 
-      total: waitlistEntries.length 
+      success: true,
+      total: waitlistEntries.length,
+      sent: successCount,
+      failed: errorCount
     };
     
   } catch (error) {

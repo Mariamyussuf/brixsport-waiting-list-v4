@@ -1,13 +1,15 @@
 import { sendFirst100Emails } from '@/scripts/send-first-100';
 
 export async function GET(request) {
-  // Check for authorization header or other security measures
-  const authHeader = request.headers.get('authorization');
-  const expectedToken = process.env.CRON_AUTH_TOKEN || 'your_random_secure_token_here_12345';
+  // Check for secret in query parameters (to match your security requirements)
+  const { searchParams } = new URL(request.url);
+  const secret = searchParams.get('secret');
+  const expectedSecret = process.env.CRON_SECRET;
   
-  if (expectedToken && authHeader !== `Bearer ${expectedToken}`) {
+  // Verify the secret
+  if (!secret || !expectedSecret || secret !== expectedSecret) {
     return new Response(
-      JSON.stringify({ error: 'Unauthorized' }),
+      JSON.stringify({ error: 'Unauthorized: Invalid or missing secret' }),
       {
         status: 401,
         headers: { 'Content-Type': 'application/json' },
