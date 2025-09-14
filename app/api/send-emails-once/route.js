@@ -6,8 +6,8 @@ export async function GET(request) {
   const secret = searchParams.get('secret');
   const expectedSecret = process.env.CRON_SECRET;
   
-  // Verify the secret
-  if (!secret || !expectedSecret || secret !== expectedSecret) {
+  // Verify the secret (decode URI component to handle special characters)
+  if (!secret || !expectedSecret || decodeURIComponent(secret) !== expectedSecret) {
     return new Response(
       JSON.stringify({ error: 'Unauthorized: Invalid or missing secret' }),
       {
