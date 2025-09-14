@@ -8,7 +8,9 @@
     "lint": "next lint",
     "start": "next start",
     "send-bulk-emails": "node scripts/send-bulk-emails.js",
-    "test-env": "node scripts/test-env.js"
+    "test-env": "node scripts/test-env.js",
+    "send-pending-emails": "node scripts/send-pending-emails.js",
+    "send-first-100": "node scripts/send-first-100.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
