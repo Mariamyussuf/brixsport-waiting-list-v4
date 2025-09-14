@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: "Brixsports - Your Campus Sports. Live. Anywhere.",
   description:
     "Real-time scores, highlights, and community for every sport on campus. Join the waitlist for early access.",
-  generator: "v0.app",
 }
 
 export default function RootLayout({

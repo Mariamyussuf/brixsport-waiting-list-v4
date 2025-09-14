@@ -37,6 +37,15 @@ This project now includes email confirmation functionality using Resend. When a 
 > 
 > Brixsports' match feed isn't about passively 'checking scores' like Livescores. It's about living the match in real time inside your campus bubble, powered by people who are actually there.
 
+### Sending Bulk Emails to Existing Users
+
+If you need to send emails to users who joined before the email system was active, you can use the bulk email script:
+
+1. Ensure your `.env` file includes all required environment variables
+2. Run `npm run send-bulk-emails`
+
+See `BULK_EMAIL_INSTRUCTIONS.md` for detailed instructions.
+
 ## Setup Instructions
 
 1. Create a free account at [Resend.com](https://resend.com)
